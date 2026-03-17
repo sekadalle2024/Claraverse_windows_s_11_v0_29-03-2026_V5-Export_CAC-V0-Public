@@ -2127,6 +2127,649 @@ Contenu de [Contexte de base]
     ]
   },
   {
+    id: 'e-audit-plan',
+    label: 'E-audit plan',
+    icon: <ClipboardList className="w-4 h-4" />,
+    phases: [
+      {
+        id: 'analyse-risques',
+        label: 'Analyse des risques',
+        etapes: [
+          {
+            id: 'eap-cartographie-processus',
+            label: 'Cartographie des processus',
+            icon: <Target className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Cycle] = Tresorerie
+[Processus] = rapprochements bancaires
+[Etape précédente] = Prise de connaissance
+[Etape de mission] = Cartographie des processus
+[Modele] = Cycle, processus, sous processus, operations
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Cycle] = Tresorerie
+[Processus] = rapprochements bancaires
+[Etape précédente] = Prise de connaissance
+[Etape de mission] = Cartographie des processus
+[Modele] = Cycle, processus, sous processus, operations
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Cycle] = Tresorerie
+[Processus] = rapprochements bancaires
+[Etape précédente] = Prise de connaissance
+[Etape de mission] = Cartographie des processus
+[Modele] = Cycle, processus, sous processus, operations
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Cycle] = Tresorerie
+[Processus] = rapprochements bancaires
+[Etape précédente] = Prise de connaissance
+[Etape de mission] = Cartographie des processus
+[Modele] = Cycle, processus, sous processus, operations
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de lignes] = 50`
+              }
+            ]
+          },
+          {
+            id: 'eap-question-identification-risques',
+            label: 'Question Identification des risques',
+            icon: <HelpCircle className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Cartographie des processus
+[Etape de mission] = Question Identification des risques
+[Modele] = Processus, sous processus, Questionnaire Identification des risques, Dispositif de maitrise des risques attendus
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Cartographie des processus
+[Etape de mission] = Question Identification des risques
+[Modele] = Processus, sous processus, Questionnaire Identification des risques, Dispositif de maitrise des risques attendus
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Cartographie des processus
+[Etape de mission] = Question Identification des risques
+[Modele] = Processus, sous processus, Questionnaire Identification des risques, Dispositif de maitrise des risques attendus
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Cartographie des processus
+[Etape de mission] = Question Identification des risques
+[Modele] = Processus, sous processus, Questionnaire Identification des risques, Dispositif de maitrise des risques attendus
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de lignes] = 50`
+              }
+            ]
+          },
+          {
+            id: 'eap-identification-risques',
+            label: 'Identification des risques',
+            icon: <AlertTriangle className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Question Identification des risques
+[Etape de mission] = Identification des risques
+[Modele] = sous processus, Point de controle, risque
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Question Identification des risques
+[Etape de mission] = Identification des risques
+[Modele] = sous processus, Point de controle, risque
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Question Identification des risques
+[Etape de mission] = Identification des risques
+[Modele] = sous processus, Point de controle, risque
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Question Identification des risques
+[Etape de mission] = Identification des risques
+[Modele] = sous processus, Point de controle, risque
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de lignes] = 50`
+              }
+            ]
+          },
+          {
+            id: 'eap-evaluation-risques',
+            label: 'Évaluation des risques',
+            icon: <BarChart3 className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Identification des risques
+[Etape de mission] = Evaluation des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Identification des risques
+[Etape de mission] = Evaluation des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Identification des risques
+[Etape de mission] = Evaluation des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Identification des risques
+[Etape de mission] = Evaluation des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de lignes] = 50`
+              }
+            ]
+          },
+          {
+            id: 'eap-plan-action-couverture',
+            label: "Plan d'action de couverture des risques",
+            icon: <CheckSquare className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Evaluation des risques
+[Etape de mission] = Plan d'action de couverture des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Evaluation des risques
+[Etape de mission] = Plan d'action de couverture des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Evaluation des risques
+[Etape de mission] = Plan d'action de couverture des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Evaluation des risques
+[Etape de mission] = Plan d'action de couverture des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de lignes] = 50`
+              }
+            ]
+          },
+          {
+            id: 'eap-mise-a-jour-cartographie',
+            label: 'Mise à jour cartographie N-1',
+            icon: <FileText className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Cartographie des risques N-1
+[Etape de mission] = Cartographie des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact, controle audit
+[Extension] = objectif de controle, document
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Cartographie des risques N-1
+[Etape de mission] = Cartographie des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact, controle audit
+[Extension] = objectif de controle, document
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Cartographie des risques N-1
+[Etape de mission] = Cartographie des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact, controle audit
+[Extension] = objectif de controle, document
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 50`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Cartographie des risques N-1
+[Etape de mission] = Cartographie des risques
+[Modele] = Point de controle, risque, évaluation risque, probabilité, impact, controle audit
+[Extension] = objectif de controle, document
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de lignes] = 50`
+              }
+            ]
+          },
+          {
+            id: 'eap-hierarchisation-risques',
+            label: 'Hiérarchisation des risques',
+            icon: <TrendingUp className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Plan d'action de couverture des risques
+[Etape de mission] = Hiearchisation des risques
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme]= Hiearchisation
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Plan d'action de couverture des risques
+[Etape de mission] = Hiearchisation des risques
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Algorithme]= Hiearchisation
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Plan d'action de couverture des risques
+[Etape de mission] = Hiearchisation des risques
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Algorithme]= Hiearchisation
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Plan d'action de couverture des risques
+[Etape de mission] = Hiearchisation des risques
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Algorithme]= Hiearchisation
+[Router] = Document
+[Nb de lignes] = 30`
+              }
+            ]
+          },
+          {
+            id: 'eap-priorisation-risques',
+            label: 'Priorisation des risques',
+            icon: <Target className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Hiearchisation des risques
+[Etape de mission] = Priorisation des risques
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme]= Priorisation
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Hiearchisation des risques
+[Etape de mission] = Priorisation des risques
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme]= Priorisation
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Hiearchisation des risques
+[Etape de mission] = Priorisation des risques
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme]= Priorisation
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Hiearchisation des risques
+[Etape de mission] = Priorisation des risques
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme]= Priorisation
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 30`
+              }
+            ]
+          },
+          {
+            id: 'eap-plan-annuel-audit',
+            label: "Plan annuel d'audit interne",
+            icon: <BookOpen className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Priorisation des risques
+[Etape de mission] = Plan annuel d'audit interne
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme]= Plan annuel d'audit
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Priorisation des risques
+[Etape de mission] = Plan annuel d'audit interne
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme] = Plan annuel d'audit
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Priorisation des risques
+[Etape de mission] = Plan annuel d'audit interne
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme] = Plan annuel d'audit
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de lignes] = 30`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Priorisation des risques
+[Etape de mission] = Plan annuel d'audit interne
+[Modele] : Point de controle, risque, évaluation risque, probabilité, impact, Plan d'action de couverture des risques
+[Algorithme] = Plan annuel d'audit
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de lignes] = 30`
+              }
+            ]
+          },
+          {
+            id: 'eap-rapport-elaboration-plan',
+            label: "Rapport d'élaboration du plan annuel d'audit",
+            icon: <FileCheck className="w-4 h-4" />,
+            modes: [
+              {
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Plan annuel d'audit interne
+[Etape de mission] = Rapport d'élaboration du plan annuel d'audit
+[Modele] : Base
+[Nb de pages] = 5`
+              },
+              {
+                id: 'avance',
+                label: 'Avancé',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Plan annuel d'audit interne
+[Etape de mission] = Rapport d'élaboration du plan annuel d'audit
+[Modele] : Base
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Nb de pages] = 5`
+              },
+              {
+                id: 'document',
+                label: 'Document',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Plan annuel d'audit interne
+[Etape de mission] = Rapport d'élaboration du plan annuel d'audit
+[Modele] : Base
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Document
+[Nb de pages] = 5`
+              },
+              {
+                id: 'database',
+                label: 'Database',
+                command: `[Command] = Etape de mission
+[Logiciel] = E-audit plan
+[Processus] = rapprochements bancaires
+[Etape précédente] = Plan annuel d'audit interne
+[Etape de mission] = Rapport d'élaboration du plan annuel d'audit
+[Modele] : Base
+[Variable 1] = Contenu de [Variable 1]
+[Variable 2] = Contenu de [Variable 2]
+[Router] = Database
+[User_id] = ohada
+[Database] = workspace_02
+[Nb de pages] = 5`
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: 'e-cartographie',
     label: 'E-cartographie',
     icon: <Map className="w-4 h-4" />,
