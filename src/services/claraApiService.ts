@@ -71,17 +71,26 @@ export class ClaraApiService {
     } else if (msg.includes("Database")) {
       // Case 10 (endpoint) a priorité sur Case 5 (table locale)
       routeKey = "database_endpoint";
-    } else if ((msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) &&
-      (msg.includes("Cours") || msg.includes("COURS") || msg.includes("cours"))) {
-      // Case 11 (CIA Cours)
-      routeKey = "cia_cours";
-    } else if ((msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) &&
-      (msg.includes("Qcm") || msg.includes("QCM") || msg.includes("Question"))) {
-      // Case 12 (CIA Qcm)
-      routeKey = "cia_qcm";
     } else if (msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) {
-      // CIA Générique (Fallback ou autre usage)
-      routeKey = "cia";
+      if (msg.includes("Cours") || msg.includes("COURS") || msg.includes("cours")) {
+        // Case 11 (CIA Cours)
+        routeKey = "cia_cours";
+      } else if (msg.includes("Qcm") || msg.includes("QCM") || msg.includes("Question")) {
+        // Case 12 (CIA Qcm)
+        routeKey = "cia_qcm";
+      } else if (msg.includes("Synthèse") || msg.includes("Synth")) {
+        // Case 14 (CIA Synthèse)
+        routeKey = "cia_synthese";
+      } else {
+        // CIA Générique (Fallback ou autre usage)
+        routeKey = "cia";
+      }
+    } else if (msg.includes("Methodologie") || msg.includes("Methodo") || msg.includes("Méthodologie")) {
+      // Case 13 (Méthodologie)
+      routeKey = "methodo";
+    } else if (msg.includes("Guide") || msg.includes("guide") || msg.includes("GUIDE")) {
+      // Case 15 (Guide)
+      routeKey = "guide";
     } else if (msg.includes("[Integration]")) {
       routeKey = "integration";
     } else if (msg.includes("n8n_doc")) {
@@ -139,6 +148,21 @@ export class ClaraApiService {
       case "cia":
         console.log("🔀 Router → Case CIA : integration_cia");
         return "https://j17rkv4c.rpcld.cc/webhook/integration_cia";
+
+      // ── Case 13 : Méthodologie ────────────────────────────────────────────────
+      case "methodo":
+        console.log("🔀 Router → Case 13 : cia_methodo_gemini");
+        return "http://localhost:5678/webhook/cia_methodo_gemini";
+
+      // ── Case 14 : CIA Synthèse ───────────────────────────────────────────────
+      case "cia_synthese":
+        console.log("🔀 Router → Case 14 : synthese_cia_gemini");
+        return "http://localhost:5678/webhook/synthese_cia_gemini";
+
+      // ── Case 15 : Guide ──────────────────────────────────────────────────────
+      case "guide":
+        console.log("🔀 Router → Case 15 : guide_gemini");
+        return "http://localhost:5678/webhook/guide_gemini";
 
       // ── Case 6 : Algorithme ─────────────────────────────────────────────
       case "algorithme":
@@ -602,7 +626,7 @@ export class ClaraApiService {
    * Détecte et normalise le format de réponse n8n.
    * Cette fonction est conçue pour être robuste et supporter plusieurs formats de réponse.
    */
-  private normalizeN8nResponse(result: any): {
+  private normalizeN8nResponse(result: any, endpoint?: string): {
     content: string;
     metadata: any;
   } {
@@ -616,6 +640,30 @@ export class ClaraApiService {
       return {
         content: "",
         metadata: { error: "Empty response from n8n", format: "error" },
+      };
+    }
+
+    // ========================================================================
+    // FORMAT METHODO: CIA Methodo Accordion
+    // ========================================================================
+    if (
+      endpoint && endpoint.includes("methodo") &&
+      Array.isArray(result) &&
+      result.length > 0 &&
+      result[0] &&
+      typeof result[0] === "object" &&
+      "Sous-section" in result[0]
+    ) {
+      console.log('✅ FORMAT METHODO DETECTE: Réponse CIA Methodo (Etape mission - Methodo)');
+      const content = `__CIA_METHODO_ACCORDION__${JSON.stringify(result)}`;
+      console.log("🔍 === FIN ANALYSE (FORMAT METHODO) ===");
+      return {
+        content,
+        metadata: {
+          format: "cia_methodo_accordion",
+          timestamp: new Date().toISOString(),
+          totalSections: result.length,
+        },
       };
     }
 
@@ -912,7 +960,7 @@ export class ClaraApiService {
 
       // Normaliser la réponse selon son format
       console.log("🔄 Appel de normalizeN8nResponse...");
-      const { content, metadata } = this.normalizeN8nResponse(result);
+      const { content, metadata } = this.normalizeN8nResponse(result, resolvedEndpoint);
 
       console.log(`📊 === RESULTAT NORMALISATION ===`);
       console.log(`  Contenu extrait: ${content.length} caractères`);

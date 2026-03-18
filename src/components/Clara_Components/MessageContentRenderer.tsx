@@ -20,6 +20,7 @@ import { copyToClipboard } from '../../utils/clipboard';
 import { ClaraFileAttachment } from '../../types/clara_assistant_types';
 import CiaAccordionRenderer from './CiaAccordionRenderer';
 import CiaQcmAccordionRenderer from './CiaQcmAccordionRenderer';
+import CiaMethodoAccordionRenderer from './CiaMethodoAccordionRenderer';
 
 // Import Chart.js components
 import {
@@ -1193,6 +1194,24 @@ const MessageContentRenderer: React.FC<MessageContentRendererProps> = React.memo
     
     return elements;
   };
+
+  // ========================================================================
+  // SPECIAL FORMAT HANDLING: CIA Methodo Accordion
+  // ========================================================================
+  if (processedContent.content.startsWith('__CIA_METHODO_ACCORDION__')) {
+    try {
+      const jsonStr = processedContent.content.replace('__CIA_METHODO_ACCORDION__', '');
+      const methodoData = JSON.parse(jsonStr);
+      return (
+        <div className={`cia-methodo-accordion-container ${className}`}>
+          <CiaMethodoAccordionRenderer data={methodoData} isDark={darkMode} />
+        </div>
+      );
+    } catch (e) {
+      console.error('Failed to parse CIA Methodo Accordion data:', e);
+      // Fall back to standard rendering if parsing fails
+    }
+  }
 
   // ========================================================================
   // SPECIAL FORMAT HANDLING: CIA QCM Accordion
