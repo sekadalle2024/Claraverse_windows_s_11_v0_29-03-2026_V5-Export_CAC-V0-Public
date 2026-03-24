@@ -361,30 +361,12 @@ export class ClaraApiService {
   ): "header" | "data_array" | "download" | "unknown" {
     const lowerKey = tableKey.toLowerCase();
 
-    // Type 1: En-tête (petit objet avec 2-5 propriétés simples)
+    // Type 1: En-tête (objet simple avec valeurs non-objets)
     if (typeof tableData === "object" && !Array.isArray(tableData)) {
       const keys = Object.keys(tableData);
       const hasSimpleValues = keys.every(
         (k) => typeof tableData[k] !== "object",
       );
-
-      // Détection par mots-clés courants d'en-tête
-      const headerKeywords = [
-        "etape",
-        "reference",
-        "ref",
-        "titre",
-        "title",
-        "date",
-        "version",
-      ];
-      const hasHeaderKeywords = keys.some((k) =>
-        headerKeywords.some((kw) => k.toLowerCase().includes(kw)),
-      );
-
-      if (keys.length <= 5 && hasSimpleValues && hasHeaderKeywords) {
-        return "header";
-      }
 
       // Type 3: Téléchargement (contient des URLs ou le mot "télécharger")
       const hasDownloadKeywords =
@@ -400,6 +382,12 @@ export class ClaraApiService {
 
       if (hasDownloadKeywords || hasUrls) {
         return "download";
+      }
+
+      // Si c'est un objet simple (valeurs non-objets), c'est un header
+      // Cela inclut les tables avec 1 seule propriété (Intitule, Description, etc.)
+      if (hasSimpleValues) {
+        return "header";
       }
     }
 

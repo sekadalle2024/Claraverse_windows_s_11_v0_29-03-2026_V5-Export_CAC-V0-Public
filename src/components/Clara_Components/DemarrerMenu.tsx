@@ -341,78 +341,40 @@ const MENU_DATA: LogicielItem[] = [
         label: 'Phase de conclusion',
         etapes: [
           {
-            id: 'frap',
-            label: 'Frap',
-            norme: '14.3 Évaluation des constats',
-            icon: <AlertTriangle className="w-4 h-4" />,
-            modes: [
-              {
-                id: 'normal',
-                label: 'Normal',
-                command: `[Command] = /Frap
-[Processus] = Elaboration des rapprochement bancaires
-[Assertion] = validité, formalisation
-[Anomalie] = les rapprochements bancaire ne sont pas verifié par le DAF
-[Constat] = inexistence de rapprochement bancaires signés pour les mois de juin a decembre 2025`
-              },
-              {
-                id: 'avance',
-                label: 'Avancé',
-                command: `[Command] = /Frap
-[Processus] = Elaboration des rapprochement bancaires
-[Assertion] = validité, formalisation
-[Anomalie] = les rapprochements bancaire ne sont pas verifié par le DAF
-[Constat] = inexistence de rapprochement bancaires signés pour les mois de juin a decembre 2025
-[Variable 1] = Contenu de [Variable 1]
-[Variable 2] = Contenu de [Variable 2]`
-              }
-            ]
-          },
-          {
-            id: 'synthese-frap',
-            label: 'Synthèse des Frap',
-            norme: '14.2 Analyses et constats potentiels de la mission',
-            icon: <FileSearch className="w-4 h-4" />,
-            modes: [
-              {
-                id: 'normal',
-                label: 'Normal',
-                command: `[Command] = Table_Template
-[Node] = Frap`
-              },
-              {
-                id: 'avance',
-                label: 'Avancé',
-                command: `[Command] = /Table synthese
-[Command Manuel] = Étape mission
-[Étape précédente] = Frap
-[Étape mission] = Synthèse des Frap
-[Modèle] = 
-[Pièces jointes] = Frap de la mission`
-              }
-            ]
-          },
-          {
-            id: 'rapport-provisoire',
-            label: 'Rapport provisoire',
-            norme: '14.5 Conclusions de la mission',
+            id: 'recos-revision-comptes',
+            label: 'Recos revision des comptes',
+            norme: '14.3 Recommandations sur la révision des comptes',
             icon: <FileText className="w-4 h-4" />,
             modes: [
               {
                 id: 'normal',
                 label: 'Normal',
-                command: `[Command] = Table_Template
-[Node] = Synthèse`
-              },
+                command: `[Command] = Recos revision des comptes
+[Cycle] = trésorerie
+[test] = AA040
+[reference] = test sur la validation du compte caisse
+[Nature de test] = Rapprochement
+[Assertion] = validité
+[Anomalie] = inexistence de pièce justificatives de caisse de 600 0000 FCFA sur les petites depenses fournisseurs`
+              }
+            ]
+          },
+          {
+            id: 'recos-controle-interne',
+            label: 'Recos contrôle interne comptable',
+            norme: '14.4 Recommandations sur le contrôle interne comptable',
+            icon: <Shield className="w-4 h-4" />,
+            modes: [
               {
-                id: 'avance',
-                label: 'Avancé',
-                command: `[Command] = /Table rapport_provisoire
-[Command Manuel] = Étape mission
-[Étape précédente] = Synthèse des Frap
-[Étape mission] = Rapport provisoire
-[Modèle] = 
-[Pièces jointes] = Synthèse des Frap`
+                id: 'normal',
+                label: 'Normal',
+                command: `[Command] = Recos contrôle interne comptable
+[Cycle] = trésorerie
+[test] = AA010
+[reference] = test sur la validation du compte caisse
+[Nature de test] = Rapprochement
+[Assertion] = validité
+[Anomalie] = inexistence de pièce justificatives de caisse de 600 0000 FCFA sur les petites depenses fournisseurs`
               }
             ]
           },
@@ -426,50 +388,15 @@ const MENU_DATA: LogicielItem[] = [
 [Objectif] = `
           },
           {
-            id: 'rapport-final',
-            label: 'Rapport final',
-            norme: '15.1 Communication des résultats définitifs de la mission',
+            id: 'rapport-synthese-cac',
+            label: 'Rapport de synthèse CAC',
+            norme: '15.1 Rapport de synthèse du Commissaire aux Comptes',
             icon: <FileCheck className="w-4 h-4" />,
             modes: [
               {
                 id: 'normal',
                 label: 'Normal',
-                command: `[Command] = Table_Template
-[Node] = Rapport provisoire`
-              },
-              {
-                id: 'avance',
-                label: 'Avancé',
-                command: `[Command] = /Table rapport_final
-[Command Manuel] = Étape mission
-[Étape précédente] = Rapport provisoire
-[Étape mission] = Rapport final
-[Modèle] = 
-[Pièces jointes] = Rapport provisoire`
-              }
-            ]
-          },
-          {
-            id: 'suivi-recos',
-            label: 'Suivi des recos',
-            norme: '15.2 Suivi des recommandations',
-            icon: <CheckSquare className="w-4 h-4" />,
-            modes: [
-              {
-                id: 'normal',
-                label: 'Normal',
-                command: `[Command] = Table_Template
-[Node] = Rapport final`
-              },
-              {
-                id: 'avance',
-                label: 'Avancé',
-                command: `[Command] = /Table suivi_recos
-[Command Manuel] = Étape mission
-[Étape précédente] = Rapport final
-[Étape mission] = Suivi des recos
-[Modèle] = 
-[Pièces jointes] = Rapport final`
+                command: `[Command] = Rapport de synthèse CAC`
               }
             ]
           }
