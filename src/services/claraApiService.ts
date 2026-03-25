@@ -488,7 +488,8 @@ export class ClaraApiService {
           (key) =>
             key.toLowerCase().includes("etape") ||
             key.toLowerCase().includes("mission") ||
-            key.toLowerCase().includes("programme"),
+            key.toLowerCase().includes("programme") ||
+            key.toLowerCase().includes("recos"),
         ) || Object.keys(data)[0]; // Fallback sur la première clé
 
       console.log(`🔍 Clé principale détectée: "${etapeMissionKey}"`);
@@ -513,7 +514,8 @@ export class ClaraApiService {
 
         switch (tableType) {
           case "header":
-            markdown += this.convertHeaderTableToMarkdown(tableData);
+            // Passer l'index pour différencier la table 1 des autres
+            markdown += this.convertHeaderTableToMarkdown(tableData, index);
             break;
 
           case "data_array":
@@ -546,13 +548,59 @@ export class ClaraApiService {
 
   /**
    * Convertit une table d'en-tête en Markdown (sans titre de section)
+   * Supporte deux formats :
+   * - Format 2 colonnes (Rubrique | Description) pour la table 1
+   * - Format 1 colonne pour les autres tables (Intitule, Description, Observation, etc.)
    */
-  private convertHeaderTableToMarkdown(data: any): string {
+  private convertHeaderTableToMarkdown(data: any, tableIndex: number = 0): string {
+    const entries = Object.entries(data);
+    
+    // Table 1 (index 0) : Format 2 colonnes (Rubrique | Description)
+    if (tableIndex === 0) {
+      let md = "| Rubrique | Description |\n";
+      md += "|----------|-------------|\n";
+
+      entries.forEach(([key, value]) => {
+        // Capitaliser la clé proprement
+        const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+        md += `| **${formattedKey}** | ${value} |\n`;
+      });
+
+      return md + "\n\n";
+    }
+    
+    // Tables 2+ (index > 0) : Format 1 colonne avec en-tête rouge
+    // Extraire la clé et la valeur (généralement une seule paire)
+    if (entries.length === 1) {
+      const [key, value] = entries[0];
+      
+      // Formater la clé comme en-tête (première lettre majuscule)
+      const headerText = key.charAt(0).toUpperCase() + key.slice(1);
+      
+      // Convertir la valeur en texte lisible (gérer les sauts de ligne)
+      let cellValue = String(value)
+        .replace(/\\n/g, '\n')  // Convertir les \n échappés en vrais sauts de ligne
+        .replace(/\n/g, '<br>') // Convertir les sauts de ligne en <br> pour le markdown
+        .trim();
+      
+      // Créer le tableau avec en-tête rouge (utiliser HTML pour le style)
+      let md = `<table style="width: 100%; border-collapse: collapse;">\n`;
+      md += `<tr style="background-color: #8B0000; color: white;">\n`;
+      md += `<th style="padding: 8px; text-align: left; border: 1px solid #8B0000;">${headerText}</th>\n`;
+      md += `</tr>\n`;
+      md += `<tr>\n`;
+      md += `<td style="padding: 8px; border: 1px solid #ddd;">${cellValue}</td>\n`;
+      md += `</tr>\n`;
+      md += `</table>\n\n`;
+      
+      return md;
+    }
+    
+    // Fallback : si plusieurs entrées, afficher en format 2 colonnes
     let md = "| Rubrique | Description |\n";
     md += "|----------|-------------|\n";
 
-    Object.entries(data).forEach(([key, value]) => {
-      // Capitaliser la clé proprement
+    entries.forEach(([key, value]) => {
       const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
       md += `| **${formattedKey}** | ${value} |\n`;
     });
