@@ -81,9 +81,10 @@ export class ClaraApiService {
       (msg.includes("Qcm") || msg.includes("QCM") || msg.includes("Question"))) {
       // Case 12 (CIA Qcm)
       routeKey = "cia_qcm";
-    } else if (msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) {
-      // CIA Générique (Fallback ou autre usage)
-      routeKey = "cia";
+    } else if ((msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) &&
+      (msg.includes("Synthèse") || msg.includes("Synthese") || msg.includes("synthèse") || msg.includes("synthese"))) {
+      // Case 13 (CIA Synthèse)
+      routeKey = "cia_synthese";
     } else if (msg.includes("Implementation_modelisation")) {
       // Case 16 (Implementation_modelisation)
       routeKey = "implementation_modelisation";
@@ -191,10 +192,10 @@ export class ClaraApiService {
         console.log("🔀 Router → Case 12 : qcm_cia_gemini");
         return "http://localhost:5678/webhook/qcm_cia_gemini";
 
-      // ── Ancien Case 11 / CIA Générique ─────────────────────────────────────────
-      case "cia":
-        console.log("🔀 Router → Case CIA : integration_cia");
-        return "https://t22wtwxl.rpcld.app/webhook/integration_cia";
+      // ── Case 13 : CIA Synthèse ────────────────────────────────────────────────
+      case "cia_synthese":
+        console.log("🔀 Router → Case 13 : synthese_cia_gemini");
+        return "http://localhost:5678/webhook/synthese_cia_gemini";
 
       // ── Case 6 : Algorithme ─────────────────────────────────────────────
       case "algorithme":
