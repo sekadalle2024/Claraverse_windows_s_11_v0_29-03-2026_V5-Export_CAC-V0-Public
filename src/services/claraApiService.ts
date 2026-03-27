@@ -804,8 +804,69 @@ export class ClaraApiService {
 
     // ========================================================================
     // FORMAT 7: METHODO REVISION — Array with "Sous-section" / "Sub-items"
-    // Similar to CIA format but for revision methodology
+    // Can be direct or wrapped in "[CADRAGE PEDAGOGIQUE]" section
     // ========================================================================
+    
+    // Case 1: Wrapped in "[CADRAGE PEDAGOGIQUE]" or similar section
+    if (Array.isArray(result) && result.length > 0) {
+      // Look for a section containing "[CADRAGE PEDAGOGIQUE]" or similar
+      const cadragePedagogiqueSection = result.find((item: any) => {
+        if (item && typeof item === "object") {
+          const keys = Object.keys(item);
+          return keys.some(key => 
+            key.includes("[CADRAGE PEDAGOGIQUE]") || 
+            key.includes("CADRAGE") ||
+            key.includes("PEDAGOGIQUE")
+          );
+        }
+        return false;
+      });
+      
+      if (cadragePedagogiqueSection) {
+        const sectionKey = Object.keys(cadragePedagogiqueSection).find(key => 
+          key.includes("[CADRAGE PEDAGOGIQUE]") || 
+          key.includes("CADRAGE") ||
+          key.includes("PEDAGOGIQUE")
+        );
+        
+        if (sectionKey) {
+          const sectionData = cadragePedagogiqueSection[sectionKey];
+          
+          // Check if this section contains the expected structure
+          if (
+            Array.isArray(sectionData) &&
+            sectionData.length > 0 &&
+            sectionData[0] &&
+            typeof sectionData[0] === "object" &&
+            "Sous-section" in sectionData[0] &&
+            "Sub-items" in sectionData[0]
+          ) {
+            console.log("✅ FORMAT 7 DETECTE: Réponse METHODO REVISION (wrapped in CADRAGE PEDAGOGIQUE)");
+            console.log("📊 Structure détectée:", {
+              totalSections: sectionData.length,
+              firstSection: sectionData[0]["Sous-section"],
+              subItemsCount: sectionData[0]["Sub-items"]?.length || 0,
+            });
+            
+            const content = `__METHODO_REVISION_ACCORDION__${JSON.stringify(sectionData)}`;
+            
+            console.log("🔍 === FIN ANALYSE (FORMAT 7 - METHODO REVISION Accordion wrapped) ===");
+            return {
+              content,
+              metadata: {
+                format: "methodo_revision_accordion",
+                timestamp: new Date().toISOString(),
+                totalSections: sectionData.length,
+                endpoint: "methodo_revision",
+                wrapped: true,
+              },
+            };
+          }
+        }
+      }
+    }
+    
+    // Case 2: Direct structure with "Sous-section" at root level
     if (
       Array.isArray(result) &&
       result.length > 0 &&
