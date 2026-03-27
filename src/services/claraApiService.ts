@@ -813,6 +813,28 @@ export class ClaraApiService {
       "Etape mission - CIA" in result[0]
     ) {
       console.log('✅ FORMAT 6 DETECTE: Réponse CIA QCM (Etape mission - CIA)');
+      
+      const etapeMission = result[0]["Etape mission - CIA"];
+      let totalQuestions = 0;
+      
+      // Compter le nombre total de questions
+      if (Array.isArray(etapeMission)) {
+        etapeMission.forEach((tableObj: any) => {
+          Object.keys(tableObj).forEach((tableKey) => {
+            const rows = tableObj[tableKey];
+            if (Array.isArray(rows)) {
+              const questionRows = rows.filter((row: any) => row.Question && row.Option);
+              totalQuestions += questionRows.length;
+            }
+          });
+        });
+      }
+      
+      console.log("📊 Structure détectée:", {
+        tablesCount: etapeMission?.length || 0,
+        totalQuestions: totalQuestions,
+      });
+      
       const content = `__CIA_QCM_ACCORDION__${JSON.stringify(result)}`;
       console.log("🔍 === FIN ANALYSE (FORMAT 6 - CIA QCM Accordion) ===");
       return {
@@ -820,32 +842,94 @@ export class ClaraApiService {
         metadata: {
           format: "cia_qcm_accordion",
           timestamp: new Date().toISOString(),
-          qcmGroupsCount: result[0]["Etape mission - CIA"].length,
+          qcmGroupsCount: etapeMission?.length || 0,
+          totalQuestions: totalQuestions,
+          endpoint: "qcm_cia_gemini",
         },
       };
     }
 
     // ========================================================================
-    // FORMAT 5: CIA — Array with "Sous-section" / "Sub-items" structure
+    // FORMAT 5: CIA COURS — Array with "Sous-section" / "Sub-items" structure
+    // OU format avec erreur contenant du JSON dans un bloc markdown
     // ========================================================================
+    
+    // Cas 1: Erreur avec JSON brut dans un bloc markdown
     if (
       Array.isArray(result) &&
       result.length > 0 &&
       result[0] &&
       typeof result[0] === "object" &&
-      "Sous-section" in result[0]
+      "error" in result[0] &&
+      "raw" in result[0]
+    ) {
+      console.log('🔧 FORMAT 5 SPECIAL: Réponse avec JSON dans bloc markdown');
+      try {
+        const rawContent = result[0].raw;
+        // Extraire le JSON du bloc markdown ```json...```
+        const jsonMatch = rawContent.match(/```json\s*([\s\S]*?)\s*```/);
+        if (jsonMatch && jsonMatch[1]) {
+          const cleanJson = jsonMatch[1].trim();
+          const parsedData = JSON.parse(cleanJson);
+          
+          // Vérifier si c'est bien une structure CIA COURS
+          if (parsedData && typeof parsedData === "object" && "Sous-section" in parsedData) {
+            // Convertir en array si c'est un objet unique
+            const dataArray = Array.isArray(parsedData) ? parsedData : [parsedData];
+            
+            console.log("✅ JSON extrait et parsé avec succès");
+            console.log("📊 Structure détectée:", {
+              totalSections: dataArray.length,
+              firstSection: dataArray[0]["Sous-section"],
+              subItemsCount: dataArray[0]["Sub-items"]?.length || 0,
+            });
+            
+            const content = `__CIA_ACCORDION__${JSON.stringify(dataArray)}`;
+            console.log("🔍 === FIN ANALYSE (FORMAT 5 - CIA COURS Accordion depuis markdown) ===");
+            return {
+              content,
+              metadata: {
+                format: "cia_accordion",
+                timestamp: new Date().toISOString(),
+                totalSections: dataArray.length,
+                endpoint: "cia_cours_gemini",
+                extractedFromMarkdown: true,
+              },
+            };
+          }
+        }
+      } catch (e) {
+        console.error("❌ Échec de l'extraction du JSON depuis le bloc markdown:", e);
+      }
+    }
+    
+    // Cas 2: Format normal avec structure directe
+    if (
+      Array.isArray(result) &&
+      result.length > 0 &&
+      result[0] &&
+      typeof result[0] === "object" &&
+      "Sous-section" in result[0] &&
+      "Sub-items" in result[0]
     ) {
       console.log(
-        '✅ FORMAT 5 DETECTE: Réponse CIA avec "Sous-section" / "Sub-items"',
+        '✅ FORMAT 5 DETECTE: Réponse CIA COURS avec "Sous-section" / "Sub-items"',
       );
+      console.log("📊 Structure détectée:", {
+        totalSections: result.length,
+        firstSection: result[0]["Sous-section"],
+        subItemsCount: result[0]["Sub-items"]?.length || 0,
+      });
+      
       const content = `__CIA_ACCORDION__${JSON.stringify(result)}`;
-      console.log("🔍 === FIN ANALYSE (FORMAT 5 - CIA Accordion) ===");
+      console.log("🔍 === FIN ANALYSE (FORMAT 5 - CIA COURS Accordion) ===");
       return {
         content,
         metadata: {
           format: "cia_accordion",
           timestamp: new Date().toISOString(),
           totalSections: result.length,
+          endpoint: "cia_cours_gemini",
         },
       };
     }
