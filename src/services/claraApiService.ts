@@ -56,14 +56,13 @@ export class ClaraApiService {
     let routeKey: string;
     let caseName: string;
 
-    // Déterminer la clé pour le switch
-    if (msg.includes("Document")) {
-      routeKey = "document";
-      caseName = "Case 9";
-    } else if (msg.includes("Database")) {
-      routeKey = "database_endpoint";
-      caseName = "Case 10";
-    } else if ((msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) &&
+    // ═══════════════════════════════════════════════════════════════════════
+    // PRIORITÉ 1: CASES SPÉCIFIQUES (Cases 2-33)
+    // Ces cases ont la priorité absolue sur les cases par défaut
+    // ═══════════════════════════════════════════════════════════════════════
+    
+    // Cases 11-13: CIA (Cours, QCM, Synthèse)
+    if ((msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) &&
       (msg.includes("Cours") || msg.includes("COURS") || msg.includes("cours"))) {
       routeKey = "cia_cours";
       caseName = "Case 11";
@@ -75,7 +74,46 @@ export class ClaraApiService {
       (msg.includes("Synthèse") || msg.includes("Synthese") || msg.includes("synthèse") || msg.includes("synthese"))) {
       routeKey = "cia_synthese";
       caseName = "Case 13";
-    } else if (msg.includes("Implementation_modelisation")) {
+    }
+    
+    // Cases 28-33: Méthodologies et Guides
+    else if (msg.includes("Methodo audit") || msg.includes("Methodologie audit")) {
+      routeKey = "methodo_audit";
+      caseName = "Case 28";
+    } else if (msg.includes("Methodo revision") || msg.includes("Methodologie revision")) {
+      routeKey = "methodo_revision";
+      caseName = "Case 33";
+    } else if (msg.includes("Guide des commandes") || msg.includes("guide des commandes")) {
+      routeKey = "guide_des_commandes";
+      caseName = "Case 29";
+    } else if (msg.includes("Guide intelligent") || msg.includes("guide intelligent")) {
+      routeKey = "guide_intelligent";
+      caseName = "Case 30";
+    } else if (msg.includes("Guide menu contextuel")) {
+      routeKey = "guide_menu_contextuel";
+      caseName = "Case 31";
+    } else if (msg.includes("Guide produit")) {
+      routeKey = "guide_produit";
+      caseName = "Case 32";
+    }
+    
+    // Cases 25-27: Recommandations et Rapports
+    else if (msg.includes("Recos contrôle interne comptable")) {
+      routeKey = "recos_controle_interne";
+      caseName = "Case 25";
+    } else if (msg.includes("Recos revision des comptes")) {
+      routeKey = "recos_revision_comptes";
+      caseName = "Case 26";
+    } else if (msg.includes("Recos_revision")) {
+      routeKey = "recos_revision";
+      caseName = "Case 23";
+    } else if (msg.includes("Rapport de synthèse CAC")) {
+      routeKey = "rapport_synthese_cac";
+      caseName = "Case 27";
+    }
+    
+    // Cases 16-22: Implémentation et Programmes
+    else if (msg.includes("Implementation_modelisation")) {
       routeKey = "implementation_modelisation";
       caseName = "Case 16";
     } else if (msg.includes("Implementation_programme_controle")) {
@@ -96,40 +134,13 @@ export class ClaraApiService {
     } else if (msg.includes("Règles et méthodes comptables")) {
       routeKey = "regles_comptables";
       caseName = "Case 22";
-    } else if (msg.includes("Recos_revision")) {
-      routeKey = "recos_revision";
-      caseName = "Case 23";
     } else if (msg.includes("Etat fin")) {
       routeKey = "etat_fin";
       caseName = "Case 24";
-    } else if (msg.includes("Recos contrôle interne comptable")) {
-      routeKey = "recos_controle_interne";
-      caseName = "Case 25";
-    } else if (msg.includes("Recos revision des comptes")) {
-      routeKey = "recos_revision_comptes";
-      caseName = "Case 26";
-    } else if (msg.includes("Rapport de synthèse CAC")) {
-      routeKey = "rapport_synthese_cac";
-      caseName = "Case 27";
-    } else if (msg.includes("Methodo audit") || msg.includes("Methodologie audit")) {
-      routeKey = "methodo_audit";
-      caseName = "Case 28";
-    } else if (msg.includes("Guide des commandes") || msg.includes("guide des commandes")) {
-      routeKey = "guide_des_commandes";
-      caseName = "Case 29";
-    } else if (msg.includes("Guide intelligent") || msg.includes("guide intelligent")) {
-      routeKey = "guide_intelligent";
-      caseName = "Case 30";
-    } else if (msg.includes("Guide menu contextuel")) {
-      routeKey = "guide_menu_contextuel";
-      caseName = "Case 31";
-    } else if (msg.includes("Guide produit")) {
-      routeKey = "guide_produit";
-      caseName = "Case 32";
-    } else if (msg.includes("Methodo revision") || msg.includes("Methodologie revision")) {
-      routeKey = "methodo_revision";
-      caseName = "Case 33";
-    } else if (msg.includes("Design")) {
+    }
+    
+    // Cases 2-10: Autres fonctionnalités spécifiques
+    else if (msg.includes("Design")) {
       routeKey = "design";
       caseName = "Case 2";
     } else if (msg.includes("n8n_doc")) {
@@ -144,14 +155,30 @@ export class ClaraApiService {
     } else if (msg.includes("Visualisation")) {
       routeKey = "visualisation";
       caseName = "Case 7";
-    } else if (
+    } else if (msg.includes("Document")) {
+      routeKey = "document";
+      caseName = "Case 9";
+    } else if (msg.includes("Database")) {
+      routeKey = "database_endpoint";
+      caseName = "Case 10";
+    }
+    
+    // ═══════════════════════════════════════════════════════════════════════
+    // PRIORITÉ 2: CASES PAR DÉFAUT (Cases 1 et 8)
+    // Ces cases ne s'appliquent QUE si aucune case spécifique n'a été détectée
+    // ═══════════════════════════════════════════════════════════════════════
+    
+    // Case 8: Notification (messages sans Command/command et sans /)
+    else if (
       !msg.includes("Command") &&
       !msg.includes("command") &&
       !msg.includes("/")
     ) {
       routeKey = "notification";
       caseName = "Case 8";
-    } else {
+    } 
+    // Case 1: Default (tous les autres messages)
+    else {
       routeKey = "default";
       caseName = "Case 1";
     }
@@ -483,8 +510,67 @@ export class ClaraApiService {
         return this.convertGenericStructureToMarkdown(data);
       }
 
-      console.log(`📊 Nombre de tables trouvées: ${etapeMission.length}`);
+      console.log(`📊 Nombre d'éléments dans le tableau: ${etapeMission.length}`);
 
+      // 🔧 NOUVEAU FORMAT CASE 25: Toutes les tables dans un seul objet
+      // Détecter si le premier élément contient plusieurs clés "table X"
+      if (etapeMission.length === 1 && typeof etapeMission[0] === 'object') {
+        const firstElement = etapeMission[0];
+        const keys = Object.keys(firstElement);
+        
+        // Vérifier si les clés sont "table 1", "table 2", etc.
+        const hasTableKeys = keys.some(key => /^table\s+\d+$/i.test(key));
+        
+        if (hasTableKeys) {
+          console.log("🔧 FORMAT CASE 25 DÉTECTÉ: Toutes les tables dans un seul objet");
+          console.log(`📊 Nombre de tables trouvées: ${keys.length}`);
+          
+          // Trier les clés par numéro de table
+          const sortedKeys = keys.sort((a, b) => {
+            const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+            const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+            return numA - numB;
+          });
+          
+          // Traiter chaque table
+          sortedKeys.forEach((tableKey, index) => {
+            const tableData = firstElement[tableKey];
+            const tableType = this.detectTableType(tableKey, tableData);
+
+            console.log(
+              `📋 Table ${index + 1}/${sortedKeys.length}: "${tableKey}" (type: ${tableType})`,
+            );
+
+            switch (tableType) {
+              case "header":
+                // Passer l'index pour différencier la table 1 des autres
+                markdown += this.convertHeaderTableToMarkdown(tableData, index);
+                break;
+
+              case "data_array":
+                const title = this.generateTableTitle(tableKey, tableData);
+                markdown += this.convertArrayTableToMarkdown(title, tableData);
+                break;
+
+              case "download":
+                markdown += this.convertDownloadTableToMarkdown(tableData);
+                break;
+
+              default:
+                console.warn(`⚠️ Type de table non reconnu: ${tableKey}`);
+                markdown += this.convertGenericStructureToMarkdown({
+                  [tableKey]: tableData,
+                });
+            }
+          });
+          
+          return markdown;
+        }
+      }
+
+      // FORMAT ORIGINAL: Chaque table dans un objet séparé
+      console.log("📊 FORMAT ORIGINAL: Chaque table dans un objet séparé");
+      
       // Traiter chaque table
       etapeMission.forEach((tableObj: any, index: number) => {
         const tableKey = Object.keys(tableObj)[0];
@@ -538,6 +624,11 @@ export class ClaraApiService {
   private convertHeaderTableToMarkdown(data: any, tableIndex: number = 0): string {
     const entries = Object.entries(data);
     
+    console.log(`🔄 convertHeaderTableToMarkdown - Table ${tableIndex + 1}:`, {
+      entriesCount: entries.length,
+      keys: entries.map(([k]) => k),
+    });
+    
     // Table 1 (index 0) : Format 2 colonnes (Rubrique | Description)
     if (tableIndex === 0) {
       let md = "| Rubrique | Description |\n";
@@ -549,10 +640,11 @@ export class ClaraApiService {
         md += `| **${formattedKey}** | ${value} |\n`;
       });
 
+      console.log(`✅ Table 1 générée (${md.length} caractères)`);
       return md + "\n\n";
     }
     
-    // Tables 2+ (index > 0) : Format 1 colonne avec en-tête rouge
+    // Tables 2+ (index > 0) : Format 1 colonne avec en-tête en gras
     // Extraire la clé et la valeur (généralement une seule paire)
     if (entries.length === 1) {
       const [key, value] = entries[0];
@@ -563,23 +655,25 @@ export class ClaraApiService {
       // Convertir la valeur en texte lisible (gérer les sauts de ligne)
       let cellValue = String(value)
         .replace(/\\n/g, '\n')  // Convertir les \n échappés en vrais sauts de ligne
-        .replace(/\n/g, '<br>') // Convertir les sauts de ligne en <br> pour le markdown
+        .replace(/\n/g, '\n\n') // Convertir les sauts de ligne en double saut pour le markdown
         .trim();
       
-      // Créer le tableau avec en-tête rouge (utiliser HTML pour le style)
-      let md = `<table style="width: 100%; border-collapse: collapse;">\n`;
-      md += `<tr style="background-color: #8B0000; color: white;">\n`;
-      md += `<th style="padding: 8px; text-align: left; border: 1px solid #8B0000;">${headerText}</th>\n`;
-      md += `</tr>\n`;
-      md += `<tr>\n`;
-      md += `<td style="padding: 8px; border: 1px solid #ddd;">${cellValue}</td>\n`;
-      md += `</tr>\n`;
-      md += `</table>\n\n`;
+      // Format Markdown avec titre de niveau 3 (mieux supporté que le gras)
+      let md = `\n### ${headerText}\n\n`;
+      md += `${cellValue}\n\n`;
+      
+      console.log(`✅ Table ${tableIndex + 1} générée:`, {
+        header: headerText,
+        contentLength: cellValue.length,
+        markdownLength: md.length,
+        preview: md.substring(0, 100),
+      });
       
       return md;
     }
     
     // Fallback : si plusieurs entrées, afficher en format 2 colonnes
+    console.log(`⚠️ Table ${tableIndex + 1}: Fallback format 2 colonnes (${entries.length} entrées)`);
     let md = "| Rubrique | Description |\n";
     md += "|----------|-------------|\n";
 
@@ -727,6 +821,7 @@ export class ClaraApiService {
     let metadata: any = {};
 
     console.log("🔍 === DEBUT ANALYSE REPONSE N8N ===");
+    console.log("📦 Structure reçue:", JSON.stringify(result, null, 2).substring(0, 500));
 
     if (!result) {
       console.error("❌ Réponse n8n vide ou null");
@@ -734,6 +829,40 @@ export class ClaraApiService {
         content: "",
         metadata: { error: "Empty response from n8n", format: "error" },
       };
+    }
+
+    // ========================================================================
+    // EXTRACTION PRÉALABLE: Gérer le format response.body[0].data de n8n
+    // ========================================================================
+    if (result && typeof result === "object" && "response" in result) {
+      console.log("🔧 FORMAT WEBHOOK N8N: Extraction de response.body[0].data");
+      
+      if (result.response && 
+          typeof result.response === "object" && 
+          "body" in result.response &&
+          Array.isArray(result.response.body) &&
+          result.response.body.length > 0) {
+        
+        console.log("✅ Structure response.body détectée");
+        
+        // Extraire le premier élément du body
+        const bodyData = result.response.body[0];
+        
+        if (bodyData && typeof bodyData === "object" && "data" in bodyData) {
+          console.log("✅ Extraction de response.body[0].data réussie");
+          console.log("📊 Données extraites:", JSON.stringify(bodyData.data, null, 2).substring(0, 300));
+          
+          // Remplacer result par les données extraites pour le traitement normal
+          // On enveloppe dans un array avec {data: ...} pour correspondre au FORMAT 4
+          result = [{ data: bodyData.data }];
+          
+          console.log("🔄 Données transformées pour traitement FORMAT 4");
+        } else {
+          console.warn("⚠️ response.body[0] ne contient pas de propriété 'data'");
+        }
+      } else {
+        console.warn("⚠️ response.body n'est pas un array ou est vide");
+      }
     }
 
     // ========================================================================
@@ -1358,6 +1487,15 @@ export class ClaraApiService {
           requestBody = { question: message };
         }
       }
+      
+      // 🔍 LOG DÉTAILLÉ: Message envoyé à n8n
+      console.log("═══════════════════════════════════════════════════════");
+      console.log("📤 MESSAGE ENVOYÉ À N8N");
+      console.log("═══════════════════════════════════════════════════════");
+      console.log("🌐 Endpoint:", resolvedEndpoint);
+      console.log("📦 Request Body:", JSON.stringify(requestBody, null, 2));
+      console.log("📝 Message brut:", message);
+      console.log("═══════════════════════════════════════════════════════");
 
       // Configuration étendue pour gérer CORS et timeouts
       const controller = new AbortController();
@@ -1407,9 +1545,16 @@ export class ClaraApiService {
       }
 
       const result = await response.json();
-      console.log("📦 === REPONSE BRUTE N8N ===");
-      console.log(JSON.stringify(result, null, 2));
-      console.log("📦 === FIN REPONSE BRUTE ===");
+      
+      // 🔍 LOG DÉTAILLÉ: Réponse reçue de n8n
+      console.log("═══════════════════════════════════════════════════════");
+      console.log("📥 RÉPONSE REÇUE DE N8N");
+      console.log("═══════════════════════════════════════════════════════");
+      console.log("📦 Réponse complète:", JSON.stringify(result, null, 2));
+      console.log("🔍 Type de réponse:", typeof result);
+      console.log("🔍 Est un Array?", Array.isArray(result));
+      console.log("🔍 Clés principales:", result ? Object.keys(result) : "N/A");
+      console.log("═══════════════════════════════════════════════════════");
 
       // Normaliser la réponse selon son format
       console.log("🔄 Appel de normalizeN8nResponse...");
