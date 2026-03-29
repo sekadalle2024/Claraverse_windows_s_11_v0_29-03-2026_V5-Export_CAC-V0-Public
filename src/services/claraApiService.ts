@@ -13,11 +13,8 @@ import {
   ClaraModel,
   ClaraAIConfig,
 } from "../types/clara_assistant_types";
-import {
-  addCompletionNotification,
-  addInfoNotification,
-} from "./notificationService";
 import { TokenLimitRecoveryService } from "./tokenLimitRecoveryService";
+import { addInfoNotification } from "./toastNotificationService";
 
 // Import specialized services
 import { claraProviderService } from "./claraProviderService";
@@ -43,276 +40,213 @@ export class ClaraApiService {
   private readonly SENTINEL_ETAT_FIN = "__INTERNAL__ETAT_FIN__";
 
   /**
-   * Router n8n – Switch-case JavaScript
-   *
-   * Retourne l'URL de l'endpoint n8n à appeler, ou une sentinelle interne
-   * quand la réponse doit être construite localement (Case 5 & Case 8).
-   *
-   * Priorité des cas (ordre d'évaluation) :
-   *   Case 9  – contient "Document"
-   *   Case 10 – contient "Database"  (endpoint database dédié)
-   *   Case 2  – contient "[Integration]"
-   *   Case 3  – contient "n8n_doc"
-   *   Case 4  – contient "Htlm_processor"
-   *   Case 5  – contient "Database"  (table locale — pris avant Case 6)
-   *   Case 6  – contient "Algorithme"
-   *   Case 7  – contient "Visualisation"
-   *   Case 8  – ne contient pas "Command", "command" ou "/" → notification
-   *   Case 1  – défaut ("Standard" ou aucune autre condition)
+   * Router n8n – Switch-case JavaScript avec informations de routing
+   * 
+   * Retourne un objet contenant:
+   * - endpoint: L'URL de l'endpoint n8n ou une sentinelle interne
+   * - caseName: Le nom du case (ex: "Case 1", "Case 2", etc.)
+   * - routeKey: La clé de route utilisée (ex: "default", "design", etc.)
    */
-  private getN8nEndpoint(userMessage: string): string {
-    // Dériver un token normalisé pour les comparaisons
+  private getN8nEndpointWithInfo(userMessage: string): {
+    endpoint: string;
+    caseName: string;
+    routeKey: string;
+  } {
     const msg = userMessage;
-
-    // Détermine la clé pour le switch :
-    // les cas sont évalués dans l'ordre via un helper séquentiel
     let routeKey: string;
+    let caseName: string;
 
+    // Déterminer la clé pour le switch
     if (msg.includes("Document")) {
       routeKey = "document";
+      caseName = "Case 9";
     } else if (msg.includes("Database")) {
-      // Case 10 (endpoint) a priorité sur Case 5 (table locale)
       routeKey = "database_endpoint";
+      caseName = "Case 10";
     } else if ((msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) &&
       (msg.includes("Cours") || msg.includes("COURS") || msg.includes("cours"))) {
-      // Case 11 (CIA Cours)
       routeKey = "cia_cours";
+      caseName = "Case 11";
     } else if ((msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) &&
       (msg.includes("Qcm") || msg.includes("QCM") || msg.includes("Question"))) {
-      // Case 12 (CIA Qcm)
       routeKey = "cia_qcm";
+      caseName = "Case 12";
     } else if ((msg.includes("CIA") || msg.includes("cia") || msg.includes("Cia")) &&
       (msg.includes("Synthèse") || msg.includes("Synthese") || msg.includes("synthèse") || msg.includes("synthese"))) {
-      // Case 13 (CIA Synthèse)
       routeKey = "cia_synthese";
+      caseName = "Case 13";
     } else if (msg.includes("Implementation_modelisation")) {
-      // Case 16 (Implementation_modelisation)
       routeKey = "implementation_modelisation";
+      caseName = "Case 16";
     } else if (msg.includes("Implementation_programme_controle")) {
-      // Case 17 (Implementation_programme_controle)
       routeKey = "implementation_programme_controle";
+      caseName = "Case 17";
     } else if (msg.includes("Implementation_cartographie")) {
-      // Case 18 (Implementation_cartographie)
       routeKey = "implementation_cartographie";
+      caseName = "Case 18";
     } else if (msg.includes("Programme_controle_comptes")) {
-      // Case 19 (Programme_controle_comptes)
       routeKey = "programme_controle_comptes";
+      caseName = "Case 19";
     } else if (msg.includes("Revue manager")) {
-      // Case 20 (Revue manager)
       routeKey = "revue_manager";
+      caseName = "Case 20";
     } else if (msg.includes("Lead_balance")) {
-      // Case 21 (Lead_balance)
       routeKey = "lead_balance";
+      caseName = "Case 21";
     } else if (msg.includes("Règles et méthodes comptables")) {
-      // Case 22 (Règles et méthodes comptables)
       routeKey = "regles_comptables";
+      caseName = "Case 22";
     } else if (msg.includes("Recos_revision")) {
-      // Case 23 (Recos_revision)
       routeKey = "recos_revision";
+      caseName = "Case 23";
     } else if (msg.includes("Etat fin")) {
-      // Case 24 (États Financiers SYSCOHADA)
       routeKey = "etat_fin";
+      caseName = "Case 24";
     } else if (msg.includes("Recos contrôle interne comptable")) {
-      // Case 25 (Recos contrôle interne comptable)
       routeKey = "recos_controle_interne";
+      caseName = "Case 25";
     } else if (msg.includes("Recos revision des comptes")) {
-      // Case 26 (Recos revision des comptes)
       routeKey = "recos_revision_comptes";
+      caseName = "Case 26";
     } else if (msg.includes("Rapport de synthèse CAC")) {
-      // Case 27 (Rapport de synthèse CAC)
       routeKey = "rapport_synthese_cac";
+      caseName = "Case 27";
     } else if (msg.includes("Methodo audit") || msg.includes("Methodologie audit")) {
-      // Case 28 (Methodo audit)
       routeKey = "methodo_audit";
+      caseName = "Case 28";
     } else if (msg.includes("Guide des commandes") || msg.includes("guide des commandes")) {
-      // Case 29 (Guide des commandes)
       routeKey = "guide_des_commandes";
+      caseName = "Case 29";
     } else if (msg.includes("Guide intelligent") || msg.includes("guide intelligent")) {
-      // Case 30 (Guide intelligent)
       routeKey = "guide_intelligent";
+      caseName = "Case 30";
     } else if (msg.includes("Guide menu contextuel")) {
-      // Case 31 (Guide menu contextuel)
       routeKey = "guide_menu_contextuel";
+      caseName = "Case 31";
     } else if (msg.includes("Guide produit")) {
-      // Case 32 (Guide produit)
       routeKey = "guide_produit";
+      caseName = "Case 32";
     } else if (msg.includes("Methodo revision") || msg.includes("Methodologie revision")) {
-      // Case 33 (Methodo revision)
       routeKey = "methodo_revision";
+      caseName = "Case 33";
     } else if (msg.includes("Design")) {
       routeKey = "design";
+      caseName = "Case 2";
     } else if (msg.includes("n8n_doc")) {
       routeKey = "n8n_doc";
+      caseName = "Case 3";
     } else if (msg.includes("Htlm_processor")) {
       routeKey = "htlm_processor";
+      caseName = "Case 4";
     } else if (msg.includes("Algorithme")) {
       routeKey = "algorithme";
+      caseName = "Case 6";
     } else if (msg.includes("Visualisation")) {
       routeKey = "visualisation";
+      caseName = "Case 7";
     } else if (
       !msg.includes("Command") &&
       !msg.includes("command") &&
       !msg.includes("/")
     ) {
       routeKey = "notification";
+      caseName = "Case 8";
     } else {
       routeKey = "default";
+      caseName = "Case 1";
     }
 
+    // Résoudre l'endpoint basé sur la routeKey
+    const endpoint = this.resolveEndpointFromRouteKey(routeKey);
+    
+    console.log(`🔀 Router → ${caseName} : ${routeKey}`);
+    
+    return {
+      endpoint,
+      caseName,
+      routeKey
+    };
+  }
+
+  /**
+   * Résout l'endpoint à partir de la routeKey
+   */
+  private resolveEndpointFromRouteKey(routeKey: string): string {
     switch (routeKey) {
-      // ── Case 2 : Design ──────────────────────────────────────────
       case "design":
-        console.log("🔀 Router → Case 2 : integration_windows");
-        return "https://t22wtwxl.rpcld.app/webhook-test/integration_windows";
-
-      // ── Case 3 : n8n_doc ────────────────────────────────────────────────
+        return "https://t22wtwxl.rpcld.app/webhook/integration_windows";
       case "n8n_doc":
-        console.log("🔀 Router → Case 3 : n8n_doc");
         return "https://t22wtwxl.rpcld.app/webhook/n8n_doc";
-
-      // ── Case 4 : Htlm_processor ─────────────────────────────────────────
       case "htlm_processor":
-        console.log("🔀 Router → Case 4 : htlm_processor");
         return "https://t22wtwxl.rpcld.app/webhook/htlm_processor";
-
-      // ── Case 5 / Case 10 : Database ─────────────────────────────────────
-      // ── Case 10 : Database ─────────────────────────────────────
-      // Case 10 => endpoint HTTP dédié
       case "database_endpoint":
-        console.log("🔀 Router → Case 10 : integration_database");
         return "https://t22wtwxl.rpcld.app/webhook/integration_database";
-
-      // ── Case 11 : CIA Cours ───────────────────────────────────────────────────
       case "cia_cours":
-        console.log("🔀 Router → Case 11 : cia_cours_gemini");
         return "http://localhost:5678/webhook/cia_cours_gemini";
-
-      // ── Case 12 : CIA QCM ─────────────────────────────────────────────────────
       case "cia_qcm":
-        console.log("🔀 Router → Case 12 : qcm_cia_gemini");
         return "http://localhost:5678/webhook/qcm_cia_gemini";
-
-      // ── Case 13 : CIA Synthèse ────────────────────────────────────────────────
       case "cia_synthese":
-        console.log("🔀 Router → Case 13 : synthese_cia_gemini");
         return "http://localhost:5678/webhook/synthese_cia_gemini";
-
-      // ── Case 6 : Algorithme ─────────────────────────────────────────────
       case "algorithme":
-        console.log("🔀 Router → Case 6 : algorithme");
         return "https://t22wtwxl.rpcld.app/webhook/algorithme";
-
-      // ── Case 7 : Visualisation ──────────────────────────────────────────
       case "visualisation":
-        console.log("🔀 Router → Case 7 : visualisation");
         return "https://t22wtwxl.rpcld.app/webhook/visualisation";
-
-      // ── Case 8 : Notification locale ────────────────────────────────────
       case "notification":
-        console.log("🔀 Router → Case 8 : notification locale (pas d'appel HTTP)");
         return this.SENTINEL_NOTIFICATION;
-
-      // ── Case 9 : Document ───────────────────────────────────────────────
       case "document":
-        console.log("🔀 Router → Case 9 : integration_document");
         return "https://t22wtwxl.rpcld.app/webhook/integration_document";
-
-      // ── Case 16 : Implementation_modelisation ────────────────────────────
       case "implementation_modelisation":
-        console.log("🔀 Router → Case 16 : implementation_modelisation");
         return "https://t22wtwxl.rpcld.app/webhook/implementation_modelisation";
-
-      // ── Case 17 : Implementation_programme_controle ──────────────────────
       case "implementation_programme_controle":
-        console.log("🔀 Router → Case 17 : implementation_programme_controle");
         return "https://t22wtwxl.rpcld.app/webhook/implementation_programme_controle";
-
-      // ── Case 18 : Implementation_cartographie ────────────────────────────
       case "implementation_cartographie":
-        console.log("🔀 Router → Case 18 : implementation_cartographie");
         return "https://t22wtwxl.rpcld.app/webhook/implementation_cartographie";
-
-      // ── Case 19 : Programme_controle_comptes ─────────────────────────────
       case "programme_controle_comptes":
-        console.log("🔀 Router → Case 19 : programme_controle_comptes");
         return "https://t22wtwxl.rpcld.app/webhook/programme_controle_comptes";
-
-      // ── Case 20 : Revue manager ──────────────────────────────────────────
       case "revue_manager":
-        console.log("🔀 Router → Case 20 : revue_manager");
         return "https://t22wtwxl.rpcld.app/webhook/revue_manager";
-
-      // ── Case 21 : Lead_balance ───────────────────────────────────────────
       case "lead_balance":
-        console.log("🔀 Router → Case 21 : lead_balance (traitement local avec upload fichier)");
         return this.SENTINEL_LEAD_BALANCE;
-
-      // ── Case 22 : Règles et méthodes comptables ──────────────────────────
       case "regles_comptables":
-        console.log("🔀 Router → Case 22 : regles_comptables");
         return "https://t22wtwxl.rpcld.app/webhook/regles_comptables";
-
-      // ── Case 23 : Recos_revision ─────────────────────────────────────────
       case "recos_revision":
-        console.log("🔀 Router → Case 23 : recos_revision");
         return "https://t22wtwxl.rpcld.app/webhook/recos_revision";
-
-      // ── Case 24 : États Financiers SYSCOHADA ─────────────────────────────
       case "etat_fin":
-        console.log("🔀 Router → Case 24 : etat_fin (traitement local avec upload fichier)");
         return this.SENTINEL_ETAT_FIN;
-
-      // ── Case 25 : Recos contrôle interne comptable ───────────────────────
       case "recos_controle_interne":
-        console.log("🔀 Router → Case 25 : recos_contrôle_interne_comptable");
         return "https://t22wtwxl.rpcld.app/webhook/recos_contrôle_interne_comptable";
-
-      // ── Case 26 : Recos revision des comptes ─────────────────────────────
       case "recos_revision_comptes":
-        console.log("🔀 Router → Case 26 : recos_revision_compte");
         return "https://t22wtwxl.rpcld.app/webhook/recos_revision_compte";
-
-      // ── Case 27 : Rapport de synthèse CAC ────────────────────────────────
       case "rapport_synthese_cac":
-        console.log("🔀 Router → Case 27 : rapport_synthese_cac");
         return "https://t22wtwxl.rpcld.app/webhook/rapport_synthese_cac";
-
-      // ── Case 28 : Methodo audit ──────────────────────────────────────────
       case "methodo_audit":
-        console.log("🔀 Router → Case 28 : methodo_audit");
         return "http://localhost:5678/webhook/methodo_audit";
-
-      // ── Case 29 : Guide des commandes ────────────────────────────────────
       case "guide_des_commandes":
-        console.log("🔀 Router → Case 29 : guide_des_commandes");
         return "http://localhost:5678/webhook/guide_des_commandes";
-
-      // ── Case 30 : Guide intelligent ──────────────────────────────────────
       case "guide_intelligent":
-        console.log("🔀 Router → Case 30 : guide_intelligent");
         return "http://localhost:5678/webhook/guide_intelligent";
-
-      // ── Case 31 : Guide menu contextuel ──────────────────────────────────
       case "guide_menu_contextuel":
-        console.log("🔀 Router → Case 31 : guide_menu_contextuel");
         return "http://localhost:5678/webhook/guide_menu_contextuel";
-
-      // ── Case 32 : Guide produit ──────────────────────────────────────────
       case "guide_produit":
-        console.log("🔀 Router → Case 32 : guide_produit");
         return "http://localhost:5678/webhook/guide_produit";
-
-      // ── Case 33 : Methodo revision ────────────────────────────────────────
       case "methodo_revision":
-        console.log("🔀 Router → Case 33 : methodo_revision");
         return "http://localhost:5678/webhook/methodo_revision";
-
-      // ── Case 1 : défaut / Standard ──────────────────────────────────────
       case "default":
       default:
-        console.log("🔀 Router → Case 1 : template (défaut)");
         return this.n8nDefaultEndpoint;
     }
+  }
+
+  /**
+   * Router n8n – Switch-case JavaScript (version legacy)
+   *
+   * Retourne l'URL de l'endpoint n8n à appeler, ou une sentinelle interne
+   * quand la réponse doit être construite localement (Case 5 & Case 8).
+   *
+   * @deprecated Utilisez getN8nEndpointWithInfo() à la place
+   */
+  private getN8nEndpoint(userMessage: string): string {
+    return this.getN8nEndpointWithInfo(userMessage).endpoint;
   }
 
 
@@ -1294,7 +1228,24 @@ export class ClaraApiService {
   ): Promise<ClaraMessage> {
     // ── Router switch-case : résolution de l'endpoint ──────────────────────
     // Déclaré hors du try pour rester accessible dans le catch
-    const resolvedEndpoint = this.getN8nEndpoint(message);
+    const routingInfo = this.getN8nEndpointWithInfo(message);
+    const resolvedEndpoint = routingInfo.endpoint;
+    
+    // 🔔 AFFICHAGE SIMPLE : Console log uniquement
+    console.log("═══════════════════════════════════════════════════════");
+    console.log("🔀 ROUTER N8N - INFORMATION DE ROUTING");
+    console.log("═══════════════════════════════════════════════════════");
+    console.log(`� Case détecté: ${routingInfo.caseName}`);
+    console.log(`📍 Route: ${routingInfo.routeKey}`);
+    console.log(`📍 URL: ${resolvedEndpoint}`);
+    console.log("═══════════════════════════════════════════════════════");
+    
+    // 🔔 NOTIFICATION VISUELLE : Affichage en front-end
+    addInfoNotification(
+      "🔀 Router N8N",
+      `${routingInfo.caseName} : ${routingInfo.routeKey}\n🌐 ${resolvedEndpoint}`,
+      7000
+    );
 
     try {
 

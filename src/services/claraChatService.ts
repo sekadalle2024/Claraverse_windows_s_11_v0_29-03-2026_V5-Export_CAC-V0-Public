@@ -15,7 +15,7 @@ import {
 import type { Tool } from '../db';
 import { claraToolService } from './claraToolService';
 import { TokenLimitRecoveryService } from './tokenLimitRecoveryService';
-import { addErrorNotification } from './notificationService';
+import { addErrorNotification } from './toastNotificationService';
 import { claraImageExtractionService } from './claraImageExtractionService';
 
 export class ClaraChatService {

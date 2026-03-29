@@ -90,7 +90,7 @@ import { claraApiService } from '../../services/claraApiService';
 import { claraTTSService } from '../../services/claraTTSService';
 
 // Import notification service
-import { addErrorNotification, addInfoNotification } from '../../services/notificationService';
+import { addErrorNotification, addInfoNotification } from '../../services/toastNotificationService';
 
 // Import attachment service
 import { claraAttachmentService } from '../../services/claraAttachmentService';

@@ -149,6 +149,13 @@ git push origin master --verbose
 
 ## 🔄 Mises à Jour
 
+### Version 1.1 - 28 Mars 2026
+- ✅ Ajout cas projet 107 MB
+- ✅ Identification seuil critique 100 MB
+- ✅ Guide spécifique SOLUTION_PROJET_107MB_28_MARS_2026.md
+- ✅ Scripts PowerShell automatisés
+- ✅ Mise à jour PROBLEMES_RENCONTRES.md
+
 ### Version 1.0 - 21 Mars 2026
 - ✅ Documentation initiale complète
 - ✅ Tous les problèmes documentés
@@ -177,3 +184,86 @@ Cette documentation est basée sur une expérience réelle. Si vous rencontrez d
 **Dernière mise à jour**: 21 Mars 2026  
 **Version**: 1.0  
 **Statut**: ✅ Complet
+
+
+---
+
+## 📅 Nouveaux Documents (28 Mars 2026)
+
+### Cas Projet 107 MB
+
+1. **[SOLUTION_PROJET_107MB_28_MARS_2026.md](SOLUTION_PROJET_107MB_28_MARS_2026.md)** - Guide complet
+   - 3 solutions détaillées
+   - Scripts PowerShell automatisés
+   - Procédures pas à pas
+   - Comparaison et recommandations
+
+2. **[RECAP_SESSION_28_MARS_2026.md](RECAP_SESSION_28_MARS_2026.md)** - Récapitulatif session
+   - Contexte et objectifs
+   - Problèmes rencontrés
+   - Travail accompli
+   - Prochaines étapes
+
+3. **[../00_SOLUTION_PUSH_GITHUB_107MB.txt](../00_SOLUTION_PUSH_GITHUB_107MB.txt)** - Démarrage rapide
+   - Vue d'ensemble visuelle
+   - Actions immédiates
+   - Liens vers documentation
+
+### Mises à Jour
+
+- **[PROBLEMES_RENCONTRES.md](PROBLEMES_RENCONTRES.md)** - Enrichi avec cas 107 MB
+  - Problème #4 ajouté
+  - Tableau comparatif complet
+  - Seuils critiques identifiés
+  - Nouvelles recommandations
+
+---
+
+## 🔍 Navigation par Taille de Projet
+
+### Projet < 50 MB
+→ [README.md](README.md#configuration-préventive)  
+→ Configuration standard suffit
+
+### Projet 50-75 MB
+→ [SOLUTIONS_DETAILLEES.md](SOLUTIONS_DETAILLEES.md#solution-1)  
+→ Désactivation compression
+
+### Projet 75-100 MB
+→ [SOLUTION_PROJET_107MB_28_MARS_2026.md](SOLUTION_PROJET_107MB_28_MARS_2026.md#solution-1)  
+→ GitHub Desktop recommandé
+
+### Projet > 100 MB (NOUVEAU)
+→ [SOLUTION_PROJET_107MB_28_MARS_2026.md](SOLUTION_PROJET_107MB_28_MARS_2026.md)  
+→ SSH ou GitHub Desktop obligatoire  
+→ [00_SOLUTION_PUSH_GITHUB_107MB.txt](../00_SOLUTION_PUSH_GITHUB_107MB.txt)
+
+---
+
+## 📈 Historique des Cas Documentés
+
+| Date | Taille | Problème | Solution | Document |
+|------|--------|----------|----------|----------|
+| 21/03/26 | 75 MB | HTTP 408 | Compression désactivée | README.md |
+| 21/03/26 | 75 MB | Curl 55 | Timeouts augmentés | PROBLEMES_RENCONTRES.md |
+| 28/03/26 | 107 MB | HTTP 408 | GitHub Desktop/SSH | SOLUTION_PROJET_107MB_28_MARS_2026.md |
+
+---
+
+## 🎯 Accès Rapide par Besoin
+
+### "Mon projet fait 107 MB"
+→ [00_SOLUTION_PUSH_GITHUB_107MB.txt](../00_SOLUTION_PUSH_GITHUB_107MB.txt)  
+→ [SOLUTION_PROJET_107MB_28_MARS_2026.md](SOLUTION_PROJET_107MB_28_MARS_2026.md)
+
+### "Je veux comprendre pourquoi ça échoue"
+→ [PROBLEMES_RENCONTRES.md](PROBLEMES_RENCONTRES.md#problème-4)  
+→ [RECAP_SESSION_28_MARS_2026.md](RECAP_SESSION_28_MARS_2026.md#problèmes-rencontrés)
+
+### "Je veux une solution immédiate"
+→ [00_SOLUTION_PUSH_GITHUB_107MB.txt](../00_SOLUTION_PUSH_GITHUB_107MB.txt)  
+→ Solution #1: GitHub Desktop
+
+### "Je veux tous les détails"
+→ [SOLUTION_PROJET_107MB_28_MARS_2026.md](SOLUTION_PROJET_107MB_28_MARS_2026.md)  
+→ [RECAP_SESSION_28_MARS_2026.md](RECAP_SESSION_28_MARS_2026.md)

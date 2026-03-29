@@ -23,6 +23,7 @@ import { StartupService } from "./services/startupService";
 import AuthPage from './components/Auth/AuthPage';
 import AdminDashboard from './components/Auth/AdminDashboard';
 import { applyTheme, getCurrentTheme } from './utils/themeManager';
+import NotificationContainer from './components/NotificationContainer';
 
 function App() {
   const [activePage, setActivePage] = useState(
@@ -368,6 +369,9 @@ function App() {
             {activePage !== "clara" && renderContent()}
           </>
         )}
+        
+        {/* Notification Container - always rendered */}
+        <NotificationContainer />
       </div>
     </ProvidersProvider>
   );

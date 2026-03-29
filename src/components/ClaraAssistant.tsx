@@ -24,7 +24,7 @@ import { saveProviderConfig, loadProviderConfig, cleanInvalidProviderConfigs } f
 import { debugProviderConfigs, clearAllProviderConfigs } from '../utils/providerConfigStorage';
 import { claraMCPService } from '../services/claraMCPService';
 import { claraMemoryService } from '../services/claraMemoryService';
-import { addCompletionNotification, addBackgroundCompletionNotification, addErrorNotification, addInfoNotification, notificationService } from '../services/notificationService';
+import { addCompletionNotification, addBackgroundCompletionNotification, addErrorNotification, addInfoNotification, notificationService } from '../services/toastNotificationService';
 import { claraBackgroundService } from '../services/claraBackgroundService';
 
 // Import clear data utility

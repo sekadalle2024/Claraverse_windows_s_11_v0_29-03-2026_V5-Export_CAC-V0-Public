@@ -13,7 +13,7 @@ import {
 } from '../types/clara_assistant_types';
 import type { Tool } from '../db';
 import { claraMemoryService } from './claraMemoryService';
-import { addCompletionNotification, addInfoNotification } from './notificationService';
+import { addCompletionNotification, addInfoNotification } from './toastNotificationService';
 import { structuredToolCallService } from './structuredToolCallService';
 import { claraToolService } from './claraToolService';
 import { claraImageExtractionService } from './claraImageExtractionService';
